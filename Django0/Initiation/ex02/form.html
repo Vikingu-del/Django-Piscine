@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <script src="popup.js"></script>
+    <style>
+        /*
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        fieldset {
+            border: 2px solid #424242;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #424242;
+            padding: 0 10px;
+        }
+        */
+        /* Style the rows */
+        /*
+        p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            flex: 1;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"] {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        */
+        /* Keep checkboxes and radios small and to the right */
+        /* input[type="checkbox"],
+        input[type="radio"] {
+            margin-left: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #424242;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2e2e2e;
+        } */
+    </style>
+</head>
+<body>
+    <form action="#">
+        <fieldset>
+            <legend>Personal Info</legend>
+
+            <p>
+                <label for="firstname">Firstname :</label>
+                <input type="text" id="firstname" name="firstname">
+            </p>
+
+            <p>
+                <label for="name">Name :</label>
+                <input type="text" id="name" name="name">
+            </p>
+
+            <p>
+                <label for="age">Age :</label>
+                <input type="number" id="age" name="age">
+            </p>
+
+            <p>
+                <label for="phone">Phone :</label>
+                <input type="tel" id="phone" name="phone">
+            </p>
+
+            <p>
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email">
+            </p>
+
+              <p>
+                <input type="checkbox" name="student" id="student" checked>
+                <label for="student">Student at 42 ? :</label>
+            </p>
+
+            <p>
+                <span>Gender:</span>
+                <input type="radio" name="gender" id="gender_male" value="Male">
+                <label for="gender_male">Male</label>
+                
+                <input type="radio" name="gender" id="gender_female" value="Female">
+                <label for="gender_female">Female</label>
+                
+                <input type="radio" name="gender" id="gender_other" value="Other">
+                <label for="gender_other">Other</label>
+            </p>
+
+            <button type="button" onclick="displayFormContents()">Run that sexy Javascript !</button>
+        </fieldset>
+    </form>
+</body>
+</html>
