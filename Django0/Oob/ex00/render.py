@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-import sys, os, re
+import sys
+import os
+import re
 
 
 # Function to open and read a file
@@ -9,11 +11,9 @@ def process_file(filename: str) -> str:
         with open(filename, "r") as f:
             template_content = f.read()
             return template_content
-    except PermissionError:
-        print(f"Error: Permission denied for {filename}")
+    except Exception as e:
+        print(f"Error: {e}")
         sys.exit(1)
-    except FileNotFoundError:
-        print(f"Error: {filename} not found")
 
 
 # Parses the global settings
@@ -28,14 +28,14 @@ def parse_settings() -> None:
                     key, value = matched.groups()
                     settings[key] = value
             globals().update(settings)
-    except FileNotFoundError:
-        print("Error: settings.py not found")
+    except Exception as e:
+        print(f"Error: {e}")
         sys.exit(1)
 
 
 # Creates the structure of an Html Dom
 def create_htmlDom() -> str:
-    return  """<!DOCTYPE html>
+    return """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -54,15 +54,9 @@ def create_index(html: str, filename: str) -> None:
         with open(filename, 'w') as f:
             f.write(html)
         print(f"File {filename} created")
-    except PermissionError:
-        print(f"You dont have permissions to write in {filename}")
-    except IsADirectoryError:
-        print(f"{filename} is a directory not a file")
-    except OSError:
-        print(f"No space left on device")
-    except UnicodeDecodeError:
-        print("You are trying to write characters that cannot be encoded by the default character encoding")
-
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
 
 
 def main():
@@ -75,7 +69,7 @@ def main():
             rendered_content = html.format(content=content.format(**globals()))
             create_index(rendered_content, "index.html")
         else:
-            print("Wrong file extension, template file must end with .template")
+            print("Wrong file extension, <*.template>")
     else:
         print("Usage: python3 render.py <file.template>")
 

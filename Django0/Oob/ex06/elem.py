@@ -108,19 +108,22 @@ class Elem:
 
 
 def main():
-    html = Elem(tag='html', content=[
-        Elem(
-            tag='head',
-            content=Elem(tag='title', content=Text('"Hello ground!"'))),
-        Elem(tag='body', content=[
-            Elem(tag='h1', content=Text('"Oh no, not again!"')),
+    try:
+        html = Elem(tag='html', content=[
             Elem(
-                tag='img',
-                attr={'src': 'http://i.imgur.com/pfp3T.jpg'},
-                tag_type='simple')
+                tag='head',
+                content=Elem(tag='title', content=Text('"Hello ground!"'))),
+            Elem(tag='body', content=[
+                Elem(tag='h1', content=Text('"Oh no, not again!"')),
+                Elem(
+                    tag='img',
+                    attr={'src': 'http://i.imgur.com/pfp3T.jpg'},
+                    tag_type='simple')
+            ])
         ])
-    ])
-    print(html)
+        print(html)
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 if __name__ == '__main__':
