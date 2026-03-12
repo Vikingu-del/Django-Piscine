@@ -17,7 +17,6 @@ class Text(str):
         text = text.replace('>', '&gt;')
         text = text.replace('"', '&quot;')
         return text.replace('\n', '\n<br />\n')
-    
 
 
 class Elem:
@@ -28,18 +27,17 @@ class Elem:
         def __init__(self, msg="Error: Missing Content"):
             super().__init__(msg)
 
-    def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
-        """
-        __init__() method.
-
-        Obviously.
-        """
+    def __init__(
+        self,
+        tag='div',
+        attr={},
+        content=None,
+        tag_type='double'
+    ):
         self.tag = tag
         self.attr = attr
-        
         if content is not None and not Elem.check_type(content):
             raise Elem.ValidationError("Error: Invalid Content Type")
-
         if content is None:
             self.content = []
         elif not isinstance(content, list):
@@ -49,12 +47,6 @@ class Elem:
         self.tag_type = tag_type
 
     def __str__(self):
-        """
-        The __str__() method will permit us to make a plain HTML representation
-        of our elements.
-        Make sure it renders everything (tag, attributes, embedded
-        elements...).
-        """
         result = ""
         attr = self.__make_attr()
         if self.tag_type == 'double':
@@ -64,19 +56,12 @@ class Elem:
         return result
 
     def __make_attr(self):
-        """
-        Here is a function to render our elements attributes.
-        """
         result = ''
         for pair in sorted(self.attr.items()):
             result += ' ' + str(pair[0]) + '="' + str(pair[1]) + '"'
         return result
 
     def __make_content(self):
-        """
-        Here is a method to render the content, including embedded elements.
-        """
-
         if len(self.content) == 0:
             return ''
         result = '\n'
@@ -91,33 +76,52 @@ class Elem:
     def add_content(self, content):
         if not Elem.check_type(content):
             raise Elem.ValidationError("Error: Missing Content")
-        if type(content) == list:
+        if isinstance(content, list):
             self.content += [elem for elem in content if elem != Text('')]
         elif content != Text(''):
             self.content.append(content)
 
     @staticmethod
     def check_type(content):
-        """
-        Is this object a HTML-compatible Text instance or a Elem, or even a
-        list of both?
-        """
-        return (isinstance(content, Elem) or type(content) == Text or
-                (type(content) == list and all([type(elem) == Text or
-                                                isinstance(elem, Elem)
-                                                for elem in content])))
+        is_single = isinstance(content, (Elem, Text))
+        is_list = (isinstance(content, list) and
+                   all(isinstance(e, (Elem, Text)) for e in content))
+        return is_single or is_list
 
 
 def main():
-    html = Elem(tag='html', content=[
-        Elem(tag='head', content=Elem(tag='title', content=Text('"Hello ground!"'))),
-        Elem(tag='body', content=[
-            Elem(tag='h1', content=Text('"Oh no, not again!"')),
-            Elem(tag='img', attr={'src': 'http://i.imgur.com/pfp3T.jpg'}, tag_type='simple')
-        ])
-    ])
-    print(html)
-
+    try:
+        html = Elem(
+            tag='html',
+            content=[
+                Elem(
+                    tag='head',
+                    content=Elem(
+                        tag='title',
+                        content=Text('"Hello ground!"')
+                    )
+                ),
+                Elem(
+                    tag='body',
+                    content=[
+                        Elem(
+                            tag='h1',
+                            content=Text('"Oh no, not again!"')
+                        ),
+                        Elem(
+                            tag='img',
+                            attr={
+                                'src': 'http://i.imgur.com/pfp3T.jpg'
+                            },
+                            tag_type='simple'
+                        )
+                    ]
+                )
+            ]
+        )
+        print(html)
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 if __name__ == '__main__':

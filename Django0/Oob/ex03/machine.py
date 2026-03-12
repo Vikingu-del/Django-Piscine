@@ -3,13 +3,18 @@
 from beverages import HotBeverage
 import random
 
+
 class CoffeeMachine:
     def __init__(self, served=0):
         self.served = served
 
     class EmptyCup(HotBeverage):
         def __init__(self):
-            super().__init__(price=0.90, name="empty cup", descript="An empty cup?! Gimme my money back!")
+            super().__init__(
+                price=0.90,
+                name="empty cup",
+                descript="An empty cup?! Gimme my money back!"
+            )
 
     class BrokenMachineException(Exception):
         def __init__(self):
@@ -27,7 +32,7 @@ class CoffeeMachine:
             return self.EmptyCup()
         else:
             return beverage_class
-        
+
 
 def main():
     from beverages import Coffee, Tea, Chocolate, Cappucinno
@@ -43,6 +48,7 @@ def main():
             print("Trying again...")
             drink = machine.serve(beverages[1])
             print(f"Served: {drink.name}")
+
 
 if __name__ == "__main__":
     main()
