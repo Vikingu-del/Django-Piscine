@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools.build_meta"]
+
+[project]
+name = "django-polls"
+version = "0.1"
+dependencies = [
+    "django>"
+]
