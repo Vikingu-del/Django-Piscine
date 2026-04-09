@@ -1,0 +1,30 @@
+{% extends "ex02/base.html" %}
+{% load static %}
+
+{% block title %}Ex02: Table colors{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'ex03/table.css' %}">
+{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>Noir</th>
+            <th>Rouge</th>
+            <th>Bleu</th>
+            <th>Vert</th>
+        </tr>
+        {% for s in shades %}
+        <tr>
+            <td style="background-color: rgb({{ s }}, {{ s }}, {{ s }});"></td>
+            
+            <td style="background-color: rgb(255, {{ s }}, {{ s }});"></td>
+            
+            <td style="background-color: rgb({{ s }}, {{ s }}, 255);"></td>
+            
+            <td style="background-color: rgb({{ s }}, 255, {{ s }});"></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

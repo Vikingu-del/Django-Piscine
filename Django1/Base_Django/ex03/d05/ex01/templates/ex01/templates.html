@@ -1,0 +1,68 @@
+{% extends "ex01/base.html" %}
+{% load static %}
+
+{% block title %}Ex01: Template engine.{% endblock %}
+
+{% block style%}
+    <link rel="stylesheet" href="{% static 'ex01/style2.css' %}">
+{% endblock %}
+
+{% block content%}
+<h1>Template Engine</h1>
+<h2>How the Template Engine Works</h2>
+<p>
+    This is where the "magic" happens. Django takes the HTML template (like display.html) and the "Base" it extends. It performs several sub-tasks:
+    <ul>
+        <li>Extension: It pulls the structure from base.html.</li>
+        <li>Inclusion: It inserts snippets like nav.html.</li>
+        <li>Interpolation: It replaces template tags (like {% verbatim %}{{ variable }}{% endverbatim %}) with actual data from the view's context.</li>
+        <li>Logic: It runs any {% verbatim %}{% if %}{% endverbatim %} or {% verbatim %}{% for %}{% endverbatim %} loops to generate the final HTML string.</li>
+    </ul>
+</p>
+<h2>Blocks</h2>
+<p>
+    Blocks are placeholders in your base template that can be overridden by child templates. They allow you to define a common structure for your pages while still being able to customize specific sections.
+</p>
+<h2>Loops: for ... in ...</h2>
+<p>
+    Loops allows us to iterate over a list of items in your template. For example, we can use a {% verbatim %}{% for %}{% endverbatim %} loop to display a list of products.
+    we can use the {% verbatim %}{{ forloop.counter }}{% endverbatim %} variable to display the current iteration count.
+    We can use the {% verbatim %}{{ forloop.counter0 }}{% endverbatim %} variable to display the current iteration count, starting at 0.
+    We can use the {% verbatim %}{{ forloop.first }}{% endverbatim %} and {% verbatim %}{{ forloop.last }}{% endverbatim %} variables to check if we are on the first or last iteration of the loop.
+    We can use the {% verbatim %}{{ forloop.parentloop }}{% endverbatim %} variable to access the parent loop when we have nested loops.
+    We can use the {% verbatim %}{{ forloop.revcounter }}{% endverbatim %} variable to display the number of iterations from the end of the loop.
+    We can use the {% verbatim %}{{ forloop.revcounter0 }}{% endverbatim %} variable to display the number of iterations from the end of the loop, starting at 0.
+    We can use the {% verbatim %}{{ forloop.depth }}{% endverbatim %} variable to display the current depth of nested loops.
+    We can use the {% verbatim %}{{ forloop.depth0 }}{% endverbatim %} variable to display the current depth of nested loops, starting at 0.
+</p>
+<h2>Conditionals: if ... elif ... else Control structures</h2>
+<p>
+    Conditionals allow us to control the flow of our template based on certain conditions. We can use {% verbatim %}{% if %}{% endverbatim %} statements to check if a variable is true, false, or empty.
+    We can also use {% verbatim %}{% elif %}{% endverbatim %} and {% verbatim %}{% else %}{% endverbatim %} statements to handle multiple conditions.
+    We can use the {% verbatim %}{{ ifchanged }}{% endverbatim %} tag to check if a variable has changed since the last iteration of a loop.
+    We can use the {% verbatim %}{{ ifequal }}{% endverbatim %} and {% verbatim %}{{ ifnotequal }}{% endverbatim %} tags to compare two variables for equality or inequality.
+</p>
+<h2>The display of the passing context variables</h2>
+<p>
+    Context variables are the data that we pass from our view to our template. We can display these variables in our template using the {% verbatim %}{{ variable }}{% endverbatim %} syntax.
+    We can also use filters to modify the display of these variables, such as {% verbatim %}{{ variable|filter_name }}{% endverbatim %}.
+    For example, we can use the {% verbatim %}{{ variable|upper }}{% endverbatim %} filter to convert a string to uppercase, or the {% verbatim %}{{ variable|length }}{% endverbatim %} filter to get the length of a list.
+    We can also use the {% verbatim %}{{ variable|default:"default_value" }}{% endverbatim %} filter to provide a default value if the variable is empty or undefined.
+    We can also use the {% verbatim %}{{ variable|join:", " }}{% endverbatim %} filter to join a list of items into a single string with a specified separator.
+    We can also use the {% verbatim %}{{ variable|date:"Y-m-d" }}{% endverbatim %} filter to format a date variable in a specific way.
+    We can also use the {% verbatim %}{{ variable|length }}{% endverbatim %} filter to get the length of a string or list.
+    A small example:
+    {% verbatim %}
+    {% for item in items %}
+        {{ item|upper }} ({{ item|length }} characters)
+    {% endfor %}
+    {% endverbatim %}
+    and in the view:
+    {% verbatim %}
+    def: display_processes(request):
+    items = ['apple', 'banana', 'cherry']
+    context = {'items': items}
+    return render(request, 'ex01/display.html', context)
+    {% endverbatim %}
+</p>
+{% endblock %}

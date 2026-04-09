@@ -1,0 +1,46 @@
+{% extends "ex01/base.html" %}
+
+{% block title %}Ex01: Django, framework web.{% endblock %}
+
+{% block content %}
+    <h1>Request-Response Cycle for a static page</h1>
+    <ol>
+        <li>
+            <h2>The Request (Client to Server)</h2>
+            <p>
+                It all starts when a user types a URL (like /ex01/display) into their browser or clicks a link.
+                The browser sends an HTTP Request to the Django server.
+            </p>
+        </li>
+        <li>
+            <h2>The URL Dispatcher (The Map)</h2>
+            <p>
+                Django receives the request and looks at the URL. It goes to the project's urls.py file. It tries to match the URL pattern (ex01/display) against the list defined there.
+                If it finds a match, it sees which View function is associated with that URL. In this case, it finds the ex01 so it goes to the ex01 app's urls.py file and looks for the display_processes view
+                registered with the name 'display_processes'. It finds it and calls that function, passing in the request object.
+            </p>
+        </li>
+        <li>
+            <h2>The View (The Logic Center)</h2>
+            <p>
+                The View is a Python function (in views.py). Its job is to:
+            </p>
+            <ul>
+                <li>Receive the web request.</li>
+                <li>Prepare any data needed (the Context).</li>
+                <li>Decide which Template should be used to display that data.</li>
+                <li>Call the render() function.</li>
+            </ul>
+        </li>
+        <h2>The Response (Server to Client)</h2>
+        <p>
+            Once the Template Engine has finished building a complete HTML string, the View wraps that string into an HTTP Response object.
+        </p>
+        <li>
+            <h2>The Answer (Rendering)</h2>
+            <p>
+                Django sends that HTTP Response back to the user's browser. The browser receives the HTML code, sees the links to your static CSS files, fetches those, and finally renders the styled page on the screen.
+            </p>
+        </li>
+    </ol>
+{% endblock %}
