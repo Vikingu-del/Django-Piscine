@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS ex00_movies (
+CREATE TABLE IF NOT EXISTS ex02_movies (
     episode_nb INT PRIMARY KEY,
     title VARCHAR(64) UNIQUE NOT NULL,
     opening_crawl TEXT,
