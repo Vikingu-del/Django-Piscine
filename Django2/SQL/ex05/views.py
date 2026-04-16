@@ -32,7 +32,7 @@ def remove(request):
         if form.is_valid():
             selected_title = form.cleaned_data['titles']
             try:
-                Movies.objects.filter(title=selected_title).delete()
+                Movies.objects.get(title=selected_title).delete()
                 return redirect('ex05:remove')
             except Exception as e:
                 return HttpResponse(str(e))

@@ -34,8 +34,8 @@ def display(request):
     try:
         data = execute_query(query, type='fetch')
         return render(request, 'ex04/display.html', {'movies': data})
-    except Exception as e:
-        return HttpResponse(str(e))
+    except Exception:
+        return render(request, 'ex04/display.html', {'movies': None})
 
 
 def remove(request):

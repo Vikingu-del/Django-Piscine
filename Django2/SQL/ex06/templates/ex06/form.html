@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} Remove Movies {% endblock %}
+{% block title %} Update Movies {% endblock %}
 
 {% block style%}
 <link rel="stylesheet" href="{% static 'ex06/form.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h1>Choose a title movie to remove</h1>
+    <h1>Choose a title movie to update</h1>
 
     <form method="post" novalidate>
         {% csrf_token %}

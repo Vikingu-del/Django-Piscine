@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Update Movies {% endblock %}
+
+{% block style%}
+<link rel="stylesheet" href="{% static 'ex07/form.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Choose a title movie to update</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update" class="btn btn-primary">
+    </form >
+{% endblock %}

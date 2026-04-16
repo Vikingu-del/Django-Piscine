@@ -35,8 +35,8 @@ def display(request):
     try:
         data = execute_query(query, type='fetch')
         return render(request, 'ex06/display.html', {'movies': data})
-    except Exception as e:
-        return HttpResponse(str(e))
+    except Exception:
+        return HttpResponse("No data available")
     
 
 def update(request):
