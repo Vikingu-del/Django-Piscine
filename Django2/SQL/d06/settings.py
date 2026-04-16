@@ -34,6 +34,10 @@ INSTALLED_APPS = [
     'ex00.apps.Ex00Config',
     'ex01.apps.Ex01Config',
     'ex02.apps.Ex02Config',
+    'ex03.apps.Ex03Config',
+    'ex04.apps.Ex04Config',
+    'ex05.apps.Ex05Config',
+    'ex06.apps.Ex06Config',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +61,7 @@ ROOT_URLCONF = 'd06.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'd06' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,5 +126,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'd06' / 'static',
+]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Remove Movies {% endblock %}
+
+{% block style%}
+<link rel="stylesheet" href="{% static 'ex04/form.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Choose a title movie to remove</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Delete">
+    </form >
+{% endblock %}

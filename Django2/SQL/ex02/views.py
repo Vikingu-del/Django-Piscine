@@ -1,42 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.conf import settings
-from d06.utils import load_query, get_sql_path
-import psycopg2
-
-
-def connect_db(database='default'):
-    db = settings.DATABASES[database]
-    return psycopg2.connect(
-        dbname = db['NAME'],
-        user = db['USER'],
-        password = db['PASSWORD'],
-        host = db['HOST'],
-        port = db['PORT']
-    )
-
-
-def execute_query(query, database='default', type='commit'):
-    conn = None
-    try:
-        conn = connect_db(database)
-        if type == 'fetch':
-            cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        else:
-            cur = conn.cursor()
-        cur.execute(query)
-        if type == 'fetch':
-            result = cur.fetchall()
-        elif type == 'commit':
-            result = conn.commit()
-        cur.close()
-        return result
-    except Exception as e:
-        raise e
-    finally:
-        if conn is not None:
-            conn.close()
-
+from d06.utils import load_query, get_sql_path, execute_query
+from d06.data import movies as movie_data
 
 # Create your views here.
 def init(request):
@@ -49,19 +14,24 @@ def init(request):
 
 
 def populate(request):
-    query = load_query(get_sql_path('ex02', 'populate.sql'))
-    try:
-        execute_query(query, type='commit')
-        return HttpResponse("OK")
-    except Exception as e:
-        return HttpResponse(str(e))
+    results = []
+    for data in movie_data:
+        query = f"""
+        INSERT INTO ex02_movies (episode_nb, title, director, producer, release_date) VALUES
+        ({data['episode_nb']}, '{data['title']}', '{data['director']}', '{data['producer']}', '{data['release_date']}')
+        """
+        try:
+            execute_query(query, type='commit')
+            results.append(f"OK - {data['title']} added to database")
+        except Exception as e:
+            results.append(f"Error - {str(e)}")
+    return render(request, 'ex02/populate.html', {'results': results})
     
 
 def display(request):
     query = load_query(get_sql_path('ex02', 'fetch.sql'))
     try:
         data = execute_query(query, type='fetch')
-        print(data)
         return render(request, 'ex02/display.html', {'movies': data})
     except Exception as e:
         return HttpResponse(str(e))

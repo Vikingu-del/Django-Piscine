@@ -1,0 +1,1 @@
+SELECT * FROM ex06_movies ORDER BY episode_nb ASC;
