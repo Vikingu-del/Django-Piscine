@@ -1,6 +1,7 @@
 import os
 import psycopg2
-from .settings import DATABASES
+from .settings import DATABASES, BASE_DIR
+from django.db import transaction
 
 def connect_db(database='default'):
     db = DATABASES[database]
@@ -42,3 +43,39 @@ def load_query(filename: str) -> str:
 def get_sql_path(app_name, filename):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_dir, app_name, filename)
+
+
+def copy_from_csv_to_db(app_name: str, table_configs: dict, database: str = 'default') -> list:
+    """
+    table_configs: { 'table_name': ('col1', 'col2', 'file.csv') }
+    """
+    results = []
+    conn = None
+    cur = None
+    try:
+        conn = connect_db(database)
+        cur = conn.cursor()
+        for table_name, config in table_configs.items():
+            # Destructure the tuple: (column_names_tuple, filename)
+            columns, file_name = config
+            csv_path = os.path.join(BASE_DIR, app_name, file_name)
+            
+            with open(csv_path, 'r') as f:
+                cur.copy_from(
+                    f,
+                    table_name,
+                    sep='\t',
+                    null='NULL',
+                    columns=columns
+                )
+            results.append(f"OK: file: {file_name} uploaded to table {table_name}")
+            
+        conn.commit()
+        return results
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return [f"Error: {e}"]
+    finally:
+        if cur: cur.close()
+        if conn: conn.close()

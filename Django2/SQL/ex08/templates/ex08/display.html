@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if peoples is not None %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Homeworld</th>
+                    <th>Climate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in peoples %}
+                <tr>
+                    <td>{{ p.character_name }}</td>
+                    <td>{{ p.homeworld }}</td>
+                    <td>{{ p.climate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data found.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Search {% endblock %}
+
+{% block style%}
+<link rel="stylesheet" href="{% static 'ex10/form.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Search a movie by filters</h1>
+
+    <form method="get">
+        {% comment %} {% csrf_token %} {% endcomment %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form >
+
+    {% if results is not None %}
+        {% if results %}
+            <ul>
+            {% for item in results %}
+                <li>
+                    {{ item.title }} - {{ item.characters__name }} - 
+                    {{ item.characters__gender }} - {{ item.characters__homeworld__name }} - 
+                    {{ item.characters__homeworld__diameter }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nothing corresponding to your research</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

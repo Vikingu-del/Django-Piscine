@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if peoples is not None or peoples.name %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Homeworld</th>
+                    <th>Climate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in peoples %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.homeworld.name }}</td>
+                    <td>{{ p.homeworld.climate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data available, please use the following command line before use:</p>
+        <code>
+            python manage.py loaddata ex09_initial_data.json
+        </code>
+    {% endif %}
+{% endblock %}
