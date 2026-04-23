@@ -1,0 +1,11 @@
+{% load django_bootstrap5 %}
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+</form >
+
+{% if error_message %}
+    <div class="alert alert-danger mt-3">{{ error_message }}</div>
+{% endif %}

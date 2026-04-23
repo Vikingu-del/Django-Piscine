@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="nav-message">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'app1:home' %}">Life Pro Tips</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toogle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            {% if request.resolver_match.url_name not in 'login register' %}
+                <span class="navbar-text me-auto">
+                    {% if user.is_authenticated %}
+                        Hello <span id="user-name">{{ user.username }} {{ user.calculate_reputation }}</span>!
+                    {% else %}
+                        Hello <span id="user-name">{{ name }}</span>!
+                    {% endif %}
+                </span>
+            {% endif %}
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app1:home' %}">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app1:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app1:login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app1:register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

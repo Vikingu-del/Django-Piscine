@@ -1,0 +1,48 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<h2> Latest Tips </h2>
+
+{% for tip in tips %}
+<div class="card mb-3 position-relative">
+    {% if user.is_authenticated %}
+    <form action="{% url 'app1:delete' tip.id %}" method="post" class="position-absolute top-0 end-0 p-2" style="z-index: 2;">
+        {% csrf_token %}
+        <button type="submit" class="btn-close" 
+            {% if user == tip.author or perms.app1.delete_tip %}
+                onclick="return confirm('ADMIN/OWNER: Delete this post permanently?');"
+                title="Delete (Admin/Owner)"
+            {% endif %}
+            aria-label="Close">
+        </button>
+    </form>
+    {% endif %}
+
+    <div class="card-body">
+        <h5 class="card-title">{{ tip.author.username }}</h5>
+        <p class="card-text">{{ tip.content }}</p>
+        <p class="card-text"><small class="text-muted">{{ tip.date }}</small></p>
+    </div>
+    
+    {% if user.is_authenticated %}
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        <div>
+            <form action="{% url 'app1:vote' tip.id 'up'%}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if user in tip.upvotes.all %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                    👍 {{ tip.upvotes.count }}
+                </button>
+            </form>
+            <form action="{% url 'app1:vote' tip.id 'down'%}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if user in tip.downvotes.all %}btn-danger{% else %}btn-outline-danger{% endif %} btn-sm">
+                    👎 {{ tip.downvotes.count }}
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% empty %}
+<p>No tips yet.</p>
+{% endfor %}
