@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %} Publish {% endblock %}
+
+{% block content %}
+    <h1>Publish an Article</h1>
+    {% include 'app/form.html' with button_text="Create Article" %}
+{% endblock %}

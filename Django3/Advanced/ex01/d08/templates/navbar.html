@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="nav-message">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'app:home' %}">Eseferi Newsletter</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toogle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            {% if request.resolver_match.url_name not in 'login register' %}
+                <span class="navbar-text me-auto">
+                    {% if user.is_authenticated %}
+                        Hello <span id="user-name">{{ user.username }}</span>!
+                    {% else %}
+                        Hello!
+                    {% endif %}
+                </span>
+            {% endif %}
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:home' %}">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:publications' %}">Publications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:favourites' %}">Favourites</a>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'app:logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link btn btn-link" style="border: none; vertical-align: baseline;">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'app:articles' %}">Articles</a>
+                    </li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        {{ article.title }}
+                    </li>
+                </ol>
+                
+            </nav>
+            <article class="mt-4">
+                <header class="mb-4 border-bottom">
+                    <h1 class="fw-bolder mb-1">{{ article.title }}</h1>
+                    <div class="text-muted fst-italic mb-2">
+                        Posted on {{ article.created|date:"F j, Y" }} by {{ article.author }}
+                    </div>
+                </header>
+            <!-- Synopsis Section -->
+                <section class="mb-4">
+                    <div class="card bg-light border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">Synopsis</h5>
+                            <p class="card-text"><em>{{ article.synopsis }}</em></p>
+                        </div>
+                    </div>
+                </section>
+                <section class="mb-5" style="line-height: 1.6;">
+                    {{ article.content|linebreaks }}
+                </section>
+            </article>
+        </div>
+    </div>
+{% endblock %}
