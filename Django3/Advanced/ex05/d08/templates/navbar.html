@@ -1,0 +1,66 @@
+{% load i18n %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0 rounded" id="nav-message">
+    <div class="container-fluid">
+        <li class="navbar-icon d-flex align-items-center">
+            <a class="navbar-brand py" href="{% url 'app:home' %}">
+                <span class="text-white fs-5">&#128196;</span>
+            </a>
+        </li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toogle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:articles' %}">{% translate "Articles" %}</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:favourites' %}">{% translate "Favourites" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:publications' %}">{% translate "Publications" %}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app:register' %}">{% translate "Register" %}</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item navbar-text me-3">
+                    {% translate "Logged as" %} {{ user.username }}
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'app:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link btn btn-link" style="border: none; vertical-align: baseline;">
+                            {% translate "Logout" %}
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <!-- Wrap the Login Form in an <li> -->
+                <li class="nav-item ms-lg-3">
+                    <form class="d-flex align-items-center" method="post" action="{% url 'app:login' %}">
+                        {% csrf_token %}
+                        <div class="me-2">
+                            {{ login_form.username }}
+                        </div>
+                        <div class="me-2">
+                            {{ login_form.password }}
+                        </div>
+                        <div class="me-2">
+                            <button type="submit" class="btn btn-sm btn-outline-light">{% translate "Login" %}</button>
+                        </div>
+                    </form>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %} {% translate "Register" %} {% endblock %}
+
+{% block content %}
+    <h1>{% translate "Create an Account" %}</h1>
+    {% include 'app/form.html' with button_text="Register" %}
+{% endblock %}

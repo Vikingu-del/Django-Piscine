@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %} {% translate "Publish" %} {% endblock %}
+
+{% block content %}
+    <h1>{% translate "Publish an Article" %}</h1>
+    {% include 'app/form.html' with button_text="Create Article" %}
+{% endblock %}

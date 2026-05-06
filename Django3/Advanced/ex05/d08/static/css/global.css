@@ -1,0 +1,18 @@
+/* 1. Ensure the nav-links take up the full height of the navbar */
+#nav-message .nav-link,
+#nav-message .navbar-text {
+    padding-top: 1rem !important;   /* Adjust these to control navbar thickness */
+    padding-bottom: 1rem !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: background-color 0.2s;
+}
+
+/* 2. The Hover effect - matching the dark gray from the image */
+#nav-message .nav-item:hover, 
+#nav-message .navbar-brand:hover {
+    background-color: #000000; /* Darker than bg-dark */
+}

@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-06 10:22+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: app/templates/app/articles.html:6 app/templates/app/detail.html:13
+#: d08/templates/navbar.html:17
+msgid "Articles"
+msgstr "Articles"
+
+#: app/templates/app/articles.html:12 app/templates/app/favourites.html:11
+#: app/templates/app/publications.html:18
+msgid "Title"
+msgstr "Titre"
+
+#: app/templates/app/articles.html:13 app/templates/app/detail.html:31
+#: app/templates/app/publications.html:19
+msgid "Synopsis"
+msgstr "Synopsis"
+
+#: app/templates/app/articles.html:14
+msgid "Writer"
+msgstr "Auteur"
+
+#: app/templates/app/articles.html:15 app/templates/app/publications.html:20
+msgid "Created"
+msgstr "Créé"
+
+#: app/templates/app/articles.html:16
+msgid "When"
+msgstr "Quand"
+
+#: app/templates/app/articles.html:30
+msgid "Read"
+msgstr "Lire"
+
+#: app/templates/app/articles.html:36 app/templates/app/favourites.html:39
+#: app/templates/app/publications.html:38
+msgid "No articles available."
+msgstr "Aucun article disponible."
+
+#: app/templates/app/detail.html:24
+msgid "Posted on"
+msgstr "Publié le"
+
+#: app/templates/app/detail.html:24
+msgid "by"
+msgstr "par"
+
+#: app/templates/app/favourites.html:5 d08/templates/navbar.html:21
+msgid "Favourites"
+msgstr "Favoris"
+
+#: app/templates/app/favourites.html:12
+msgid "Author"
+msgstr "Auteur"
+
+#: app/templates/app/favourites.html:13
+msgid "Remove"
+msgstr "Supprimer"
+
+#: app/templates/app/login.html:5 app/templates/app/login.html:8
+#: d08/templates/navbar.html:58
+msgid "Login"
+msgstr "Connexion"
+
+#: app/templates/app/publications.html:5 d08/templates/navbar.html:24
+msgid "Publications"
+msgstr "Publications"
+
+#: app/templates/app/publications.html:9
+msgid "My Publications"
+msgstr "Mes publications"
+
+#: app/templates/app/publications.html:12 app/templates/app/publish.html:5
+msgid "Publish"
+msgstr "Publier"
+
+#: app/templates/app/publish.html:8
+msgid "Publish an Article"
+msgstr "Publier un article"
+
+#: app/templates/app/register.html:4 d08/templates/navbar.html:28
+msgid "Register"
+msgstr "S'inscrire"
+
+#: app/templates/app/register.html:7
+msgid "Create an Account"
+msgstr "Créer un compte"
+
+#: d08/settings.py:118
+msgid "English"
+msgstr "Anglais"
+
+#: d08/settings.py:119
+msgid "French"
+msgstr "Français"
+
+#: d08/templates/base.html:10
+msgid "EN"
+msgstr "FR"
+
+#: d08/templates/base.html:33
+msgid "Share your writings"
+msgstr "Partagez vos textes"
+
+#: d08/templates/navbar.html:36
+msgid "Logged as"
+msgstr "Connecté en tant que"
+
+#: d08/templates/navbar.html:42
+msgid "Logout"
+msgstr "Se déconnecter"
