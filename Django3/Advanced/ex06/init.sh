@@ -10,3 +10,7 @@ pip install -r requirements.txt
 
 sudo apt-get update
 sudo apt-get install gettext
+
+# sudo -u postgres psql
+# ALTER USER djangouser CREATEDB;
+# \q

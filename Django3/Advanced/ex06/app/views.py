@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, RedirectView, CreateView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .mixins import LoginContextMixin
 from django.urls import reverse_lazy # what does reverse_lazy do?
 from .models import Article, UserFavouriteArticle
@@ -19,7 +19,7 @@ class Publications(LoginContextMixin, LoginRequiredMixin, ListView):
     model = Article
     template_name = 'app/publications.html'
     context_object_name = 'articles'
-    login_url = '/home/'
+    login_url = reverse_lazy('app:login')
 
     def get_queryset(self):
         return Article.objects.filter(author=self.request.user).defer('content', 'author').all()
@@ -29,7 +29,7 @@ class Favourites(LoginContextMixin, LoginRequiredMixin, ListView):
     model = UserFavouriteArticle
     template_name = 'app/favourites.html'
     context_object_name = 'articles'
-    login_url = '/home/'
+    login_url = reverse_lazy('app:login')
 
     def get_queryset(self):
         return UserFavouriteArticle.objects.filter(
@@ -67,21 +67,26 @@ class Login(LoginView):
 
 class Logout(LoginContextMixin, LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy('app:home')
-    login_url = '/home/'
 
     
-class Register(CreateView):
+class Register(UserPassesTestMixin, CreateView):
     form_class = UserCreationForm
     template_name = 'app/register.html'
     success_url = reverse_lazy('app:login')
+
+    def test_func(self):
+        return not self.request.user.is_authenticated
+    
+    def handle_no_permission(self):
+        return redirect('app:articles')
 
 
 class Publish(LoginContextMixin, LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'synopsis', 'content']
     template_name = 'app/publish.html'
+    login_url = reverse_lazy('app:login')
     success_url = reverse_lazy('app:publications')
-    login_url = '/home/'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -89,7 +94,7 @@ class Publish(LoginContextMixin, LoginRequiredMixin, CreateView):
     
 
 class FavoriteToggle(LoginRequiredMixin, RedirectView):
-    login_url = '/home/'
+    login_url = reverse_lazy('app:login')
     def post(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs['pk'])
 
