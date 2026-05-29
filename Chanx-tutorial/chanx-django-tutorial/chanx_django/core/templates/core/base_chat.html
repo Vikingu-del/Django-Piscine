@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chat{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .logs-button {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .logs-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            background: #667eea;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .message.received {
+            background: #e9ecef;
+            color: #333;
+            align-self: flex-start;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .input-container {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .message-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        .logs-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logs-modal.active {
+            display: flex;
+        }
+
+        .logs-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logs-header {
+            padding: 20px;
+            background: #667eea;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logs-header h2 {
+            font-size: 20px;
+        }
+
+        .close-logs {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logs-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .log-entry {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .log-entry.sent {
+            border-left-color: #28a745;
+        }
+
+        .log-entry.received {
+            border-left-color: #17a2b8;
+        }
+
+        .log-type {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .log-data {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+
+        .connection-status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 15px;
+        }
+
+        .connection-status.connected {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .connection-status.disconnected {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .navbar {
+            background: #2d3748;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            gap: 2px;
+        }
+
+        .nav-link {
+            flex: 1;
+            padding: 15px 20px;
+            color: #e2e8f0;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #374151;
+            border-bottom-color: #667eea;
+            color: white;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'core:landing' %}" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
+            <a href="{% url 'chat:room_list' %}" class="nav-link {% block nav_chat %}{% endblock %}">Chat Rooms</a>
+            <a href="{% url 'assistants:chat' %}" class="nav-link {% block nav_assistant %}{% endblock %}">Assistant</a>
+            <a href="{% url 'system:chat' %}" class="nav-link {% block nav_system %}{% endblock %}">System</a>
+        </div>
+    </nav>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div>
+                <h1>{% block chat_title %}Chat{% endblock %}</h1>
+                <span class="connection-status disconnected" id="connectionStatus">Disconnected</span>
+            </div>
+            <button class="logs-button" onclick="toggleLogs()">View Logs</button>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+            {% block initial_messages %}
+            <!-- Messages will appear here -->
+            {% endblock %}
+        </div>
+
+        <div class="input-container">
+            <input
+                type="text"
+                class="message-input"
+                id="messageInput"
+                placeholder="Type your message..."
+                onkeypress="handleKeyPress(event)"
+            >
+            <button class="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="logs-modal" id="logsModal">
+        <div class="logs-content">
+            <div class="logs-header">
+                <h2>WebSocket Logs</h2>
+                <button class="close-logs" onclick="toggleLogs()">&times;</button>
+            </div>
+            <div class="logs-body" id="logsBody">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        const logs = [];
+
+        function addLog(type, data) {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push({ type, data, timestamp });
+            updateLogsDisplay();
+        }
+
+        function updateLogsDisplay() {
+            const logsBody = document.getElementById('logsBody');
+            logsBody.innerHTML = logs.map(log => `
+                <div class="log-entry ${log.type}">
+                    <div class="log-type">[${log.timestamp}] ${log.type.toUpperCase()}</div>
+                    <div class="log-data">${JSON.stringify(log.data, null, 2)}</div>
+                </div>
+            `).reverse().join('');
+        }
+
+        function updateConnectionStatus(connected) {
+            const status = document.getElementById('connectionStatus');
+            if (connected) {
+                status.textContent = 'Connected';
+                status.className = 'connection-status connected';
+            } else {
+                status.textContent = 'Disconnected';
+                status.className = 'connection-status disconnected';
+            }
+        }
+
+        // Default message handler - can be overridden by child templates
+        function handleMessage(data) {
+            // Default implementation: display payload or message
+            displayMessage(data.payload || data.message || JSON.stringify(data), 'received');
+        }
+
+        // Default payload builder - can be overridden by child templates
+        function buildMessagePayload(message) {
+            return {
+                action: 'message',
+                payload: message
+            };
+        }
+
+        // Hook for custom onmessage handling - can be overridden by child templates
+        function onMessageReceived(e) {
+            const data = JSON.parse(e.data);
+            console.log('Message received:', data);
+            addLog('received', data);
+            // Call the message handler (can be overridden by child templates)
+            handleMessage(data);
+        }
+
+        function connectWebSocket() {
+            {% block websocket_url %}
+            // Override this block to provide the WebSocket URL
+            const wsUrl = 'ws://localhost:8000/ws/default/';
+            {% endblock %}
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = function(e) {
+                console.log('WebSocket connected');
+                addLog('connection', { status: 'connected' });
+                updateConnectionStatus(true);
+            };
+
+            ws.onmessage = function(e) {
+                onMessageReceived(e);
+            };
+
+            ws.onerror = function(e) {
+                console.error('WebSocket error:', e);
+                addLog('error', { error: 'WebSocket error occurred' });
+            };
+
+            ws.onclose = function(e) {
+                console.log('WebSocket closed');
+                addLog('connection', { status: 'disconnected' });
+                updateConnectionStatus(false);
+            };
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (message && ws && ws.readyState === WebSocket.OPEN) {
+                // Build payload using the function (can be overridden by child templates)
+                const payload = buildMessagePayload(message);
+
+                ws.send(JSON.stringify(payload));
+                addLog('sent', payload);
+                displayMessage(message, 'sent');
+                input.value = '';
+            }
+        }
+
+        function displayMessage(text, type) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const messageText = document.createElement('div');
+            messageText.textContent = text;
+
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString();
+
+            messageDiv.appendChild(messageText);
+            messageDiv.appendChild(messageTime);
+            container.appendChild(messageDiv);
+
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function toggleLogs() {
+            const modal = document.getElementById('logsModal');
+            modal.classList.toggle('active');
+        }
+
+        // Connect on page load
+        window.addEventListener('load', connectWebSocket);
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

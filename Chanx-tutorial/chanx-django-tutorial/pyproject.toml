@@ -1,0 +1,58 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[dependency-groups]
+dev = [
+  "black>=25.1.0,<26",
+  "django-stubs>=5.2.7",
+  "djangorestframework-stubs>=3.16.4",
+  "mypy>=1.15.0",
+  "pre-commit>=3.4.0,<4.0.0",
+  "pyright[nodejs]>=1.1.400,<2",
+  "ruff>=0.11.3,<0.12",
+  "toml-sort>=0.24.2,<0.25",
+  "types-channels>=4.3.0.20250822"
+]
+
+[project]
+authors = [{email = "ndhgl99@gmail.com", name = "Huy Nguyen"}]
+classifiers = []
+dependencies = [
+  "channels-redis>=4.3.0",
+  "channels>=4.3.1",
+  "chanx[channels]>=2.7.1",
+  "daphne>=4.2.1",
+  "django>=5.2.7",
+  "djangorestframework>=3.16.1",
+  "drf-auth-kit>=0.3.9",
+  "environs>=14.3.0",
+  "psycopg-pool>=3.2.6",
+  "psycopg[binary]>=3.2.10"
+]
+description = "Chanx Django Tutorial"
+license = {file = "LICENSE"}
+name = "chanx_django"
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+version = "0.0.0"
+
+[tool.black]
+line-length = 88
+preview = true
+
+[tool.hatch.build.targets.sdist]
+include = ["chanx_django"]
+
+[tool.hatch.build.targets.wheel]
+include = ["chanx_django"]
+
+[tool.tomlsort]
+all = true
+in_place = true
+spaces_before_inline_comment = 2
+overrides."lint.isort.section-order".inline_arrays = false
+
+[tool.uv]
+default-groups = "all"
+package = false

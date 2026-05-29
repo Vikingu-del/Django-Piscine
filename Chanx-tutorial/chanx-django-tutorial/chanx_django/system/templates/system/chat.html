@@ -1,0 +1,176 @@
+{% extends "core/base_chat.html" %}
+
+{% block title %}System Chat{% endblock %}
+
+{% block nav_system %}active{% endblock %}
+
+{% block chat_title %}System Background Tasks{% endblock %}
+
+{% block websocket_url %}
+const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const wsUrl = `${wsProtocol}//${window.location.host}/ws/system/`;
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .task-selector {
+        padding: 15px 20px;
+        border-bottom: 1px solid #e9ecef;
+        background: #f8f9fa;
+    }
+
+    .task-selector-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #495057;
+    }
+
+    .task-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .task-button {
+        padding: 8px 16px;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .task-button:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .task-button.active {
+        background: #667eea;
+        color: white;
+    }
+
+    .message.system-notification {
+        background: #fff3cd;
+        color: #856404;
+        border-left: 4px solid #ffc107;
+        align-self: center;
+        max-width: 90%;
+    }
+
+    .message.job-queued {
+        background: #d1ecf1;
+        color: #0c5460;
+        border-left: 4px solid #17a2b8;
+        align-self: flex-start;
+    }
+</style>
+{% endblock %}
+
+{% block initial_messages %}
+<div class="task-selector">
+    <div class="task-selector-label">Select Task Type:</div>
+    <div class="task-buttons">
+        <button class="task-button active" data-task="translate">🌍 Translate</button>
+        <button class="task-button" data-task="analyze">📊 Analyze</button>
+        <button class="task-button" data-task="generate">🤖 Generate</button>
+        <button class="task-button" data-task="default">✅ Default</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let selectedTask = 'translate';
+
+    // Handle task button clicks
+    document.addEventListener('DOMContentLoaded', function() {
+        const taskButtons = document.querySelectorAll('.task-button');
+        taskButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                taskButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                // Update selected task
+                selectedTask = this.getAttribute('data-task');
+            });
+        });
+    });
+
+    // Override buildMessagePayload to include task type
+    buildMessagePayload = function(message) {
+        return {
+            action: 'system_message',
+            payload: {
+                task_type: selectedTask,
+                content: message
+            }
+        };
+    };
+
+    // Override handleMessage to handle different message types
+    handleMessage = function(data) {
+        if (data.action === 'job_queued') {
+            // Display job queued message
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message job-queued';
+
+            const textDiv = document.createElement('div');
+            textDiv.textContent = data.payload;
+            messageDiv.appendChild(textDiv);
+
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString();
+            messageDiv.appendChild(messageTime);
+
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        } else if (data.action === 'job_result') {
+            // Display job result
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message received';
+
+            const textDiv = document.createElement('div');
+            textDiv.style.whiteSpace = 'pre-line';
+            textDiv.textContent = data.payload;
+            messageDiv.appendChild(textDiv);
+
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString();
+            messageDiv.appendChild(messageTime);
+
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        } else if (data.action === 'system_notification') {
+            // Display system notification
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message system-notification';
+
+            const textDiv = document.createElement('div');
+            textDiv.textContent = '📢 ' + data.payload;
+            messageDiv.appendChild(textDiv);
+
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString();
+            messageDiv.appendChild(messageTime);
+
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        } else {
+            // Use default handler
+            displayMessage(data.payload || data.message || JSON.stringify(data), 'received');
+        }
+    };
+</script>
+{% endblock %}

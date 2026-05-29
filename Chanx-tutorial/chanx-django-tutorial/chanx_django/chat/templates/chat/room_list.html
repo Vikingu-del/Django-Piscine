@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Rooms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: #2d3748;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            gap: 2px;
+        }
+
+        .nav-link {
+            flex: 1;
+            padding: 15px 20px;
+            color: #e2e8f0;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #374151;
+            border-bottom-color: #667eea;
+            color: white;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .room-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea;
+        }
+
+        .join-button {
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .join-button:active {
+            transform: translateY(0);
+        }
+
+        .quick-rooms {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .quick-rooms h2 {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .room-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .room-link {
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .room-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .info-text {
+            color: #888;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'core:landing' %}" class="nav-link">Home</a>
+            <a href="{% url 'chat:room_list' %}" class="nav-link active">Chat Rooms</a>
+            <a href="{% url 'assistants:chat' %}" class="nav-link">Assistant</a>
+            <a href="{% url 'system:chat' %}" class="nav-link">System</a>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="container">
+        <h1>Join a Chat Room</h1>
+
+        <form class="room-form" onsubmit="joinRoom(event)">
+            <div class="form-group">
+                <label for="userName">Your Name</label>
+                <input
+                    type="text"
+                    id="userName"
+                    name="user_name"
+                    placeholder="Enter your name..."
+                    required
+                >
+            </div>
+            <div class="form-group">
+                <label for="roomName">Room Name</label>
+                <input
+                    type="text"
+                    id="roomName"
+                    name="room_name"
+                    placeholder="Enter room name..."
+                    required
+                >
+            </div>
+            <button type="submit" class="join-button">Join Room</button>
+        </form>
+
+        <div class="quick-rooms">
+            <h2>Quick Join</h2>
+            <div class="room-links">
+                <a href="#" class="room-link" onclick="quickJoin(event, 'general')">General</a>
+                <a href="#" class="room-link" onclick="quickJoin(event, 'tech')">Tech Talk</a>
+                <a href="#" class="room-link" onclick="quickJoin(event, 'random')">Random</a>
+            </div>
+        </div>
+
+        <p class="info-text">Enter your name and a room name, or use quick join links above</p>
+        </div>
+    </div>
+
+    <script>
+        // Load saved username on page load
+        window.addEventListener('load', function() {
+            const savedName = localStorage.getItem('chatUsername');
+            if (savedName) {
+                document.getElementById('userName').value = savedName;
+            }
+        });
+
+        function joinRoom(event) {
+            event.preventDefault();
+            const userName = document.getElementById('userName').value.trim();
+            const roomName = document.getElementById('roomName').value.trim();
+
+            if (userName && roomName) {
+                // Save username to localStorage
+                localStorage.setItem('chatUsername', userName);
+                // Navigate to the room
+                window.location.href = `/chat/${encodeURIComponent(roomName)}/`;
+            }
+        }
+
+        function quickJoin(event, roomName) {
+            event.preventDefault();
+            const userName = document.getElementById('userName').value.trim();
+
+            if (!userName) {
+                alert('Please enter your name first!');
+                document.getElementById('userName').focus();
+                return;
+            }
+
+            // Save username to localStorage
+            localStorage.setItem('chatUsername', userName);
+            // Navigate to the room
+            window.location.href = `/chat/${encodeURIComponent(roomName)}/`;
+        }
+    </script>
+</body>
+</html>

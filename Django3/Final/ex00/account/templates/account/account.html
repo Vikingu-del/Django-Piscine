@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block header_title %}Account{% endblock %}
+
+{% block content %}
+<div id="login-section" class="{% if user.is_authenticated %}d-none{% endif %}">
+    <form id="ajax-auth-form" method="POST" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+    <div id="login-errors" class="alert alert-danger mt-3 d-none"></div>
+</div>
+
+<div id="logout-section" class="{% if not user.is_authenticated %}d-none{% endif %}">
+    <p>Logged as <span id="current-username" class="fw-bold">{{ user.username }}</span></p>
+    <button id="ajax-logout-btn" class="btn btn-danger">Logout</button>
+</div>
+{% endblock %}

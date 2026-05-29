@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chanx Django Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: #2d3748;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            gap: 2px;
+        }
+
+        .nav-link {
+            flex: 1;
+            padding: 15px 20px;
+            color: #e2e8f0;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #374151;
+            border-bottom-color: #667eea;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .hero {
+            background: white;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #777;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .feature-card .use-case {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            font-size: 13px;
+            color: #888;
+            font-style: italic;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'core:landing' %}" class="nav-link active">Home</a>
+            <a href="{% url 'chat:room_list' %}" class="nav-link">Chat Rooms</a>
+            <a href="{% url 'assistants:chat' %}" class="nav-link">Assistant</a>
+            <a href="{% url 'system:chat' %}" class="nav-link">System</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="container">
+            <div class="hero">
+                <h1>Chanx Django Tutorial</h1>
+                <p>Learn to build real-time WebSocket applications with Django and Chanx</p>
+                <p class="subtitle">
+                    This tutorial demonstrates how to use the Chanx package to create powerful,
+                    real-time communication features in your Django applications. Explore three
+                    different use cases below!
+                </p>
+            </div>
+
+            <div class="features">
+                <a href="{% url 'chat:room_list' %}" class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Chat Rooms</h3>
+                    <p>Real-time multi-user chat rooms with message broadcasting</p>
+                    <div class="use-case">
+                        <strong>Use Case:</strong> Build collaborative spaces where multiple users
+                        can communicate in real-time. Perfect for team collaboration, community
+                        discussions, or customer support.
+                    </div>
+                </a>
+
+                <a href="{% url 'assistants:chat' %}" class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Assistant Chat</h3>
+                    <p>AI-powered assistant with streaming responses</p>
+                    <div class="use-case">
+                        <strong>Use Case:</strong> Integrate AI assistants that can process user
+                        queries and provide intelligent responses. Great for chatbots, virtual
+                        assistants, or automated customer service.
+                    </div>
+                </a>
+
+                <a href="{% url 'system:chat' %}" class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>System Chat</h3>
+                    <p>System notifications and administrative messaging</p>
+                    <div class="use-case">
+                        <strong>Use Case:</strong> Send real-time system alerts, notifications,
+                        and administrative messages to users. Ideal for monitoring dashboards,
+                        status updates, or critical alerts.
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Built with Django and Chanx | <a href="https://github.com/huynguyengl99/chanx" target="_blank">Learn more about Chanx</a></p>
+    </div>
+</body>
+</html>

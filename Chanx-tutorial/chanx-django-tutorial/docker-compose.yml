@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15.14
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    env_file:
+      - .env.local
+    ports:
+      - "5432:5432"
+    networks:
+      - chanx_django
+
+  redis:
+    image: redis:8.2.2
+    ports:
+      - "6379:6379"
+    networks:
+      - chanx_django
+
+volumes:
+  dbdata:
+
+networks:
+  chanx_django:
+    driver: bridge

@@ -1,0 +1,63 @@
+{% extends "core/base_chat.html" %}
+
+{% block title %}Assistant Chat{% endblock %}
+
+{% block nav_assistant %}active{% endblock %}
+
+{% block chat_title %}Assistant Chat{% endblock %}
+
+{% block websocket_url %}
+const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const wsUrl = `${wsProtocol}//${window.location.host}/ws/assistants/`;
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentStreamingMessage = null;
+
+    // Override buildMessagePayload to customize the payload for assistant messages
+    buildMessagePayload = function(message) {
+        return {
+            action: 'assistant_message',
+            payload: message
+        };
+    };
+
+    // Override handleMessage to handle streaming messages
+    handleMessage = function(data) {
+        if (data.action === 'streaming_start') {
+            // Create a new message element for the streaming response
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message received';
+            messageDiv.innerHTML = `
+                <div class="message-content streaming"></div>
+                <div class="message-time">${new Date().toLocaleTimeString()}</div>
+            `;
+            document.getElementById('messagesContainer').appendChild(messageDiv);
+            currentStreamingMessage = messageDiv.querySelector('.message-content');
+
+            // Scroll to bottom
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+        } else if (data.action === 'streaming') {
+            // Append token to current streaming message
+            if (currentStreamingMessage) {
+                currentStreamingMessage.textContent += data.payload.content;
+
+                // Scroll to bottom
+                const container = document.getElementById('messagesContainer');
+                container.scrollTop = container.scrollHeight;
+            }
+        } else if (data.action === 'complete_streaming') {
+            // Finalize the streaming message
+            if (currentStreamingMessage) {
+                currentStreamingMessage.classList.remove('streaming');
+                currentStreamingMessage = null;
+            }
+        } else {
+            // Handle other message types (like pong)
+            displayMessage(data.payload || data.message || JSON.stringify(data), 'received');
+        }
+    };
+</script>
+{% endblock %}

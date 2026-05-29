@@ -1,0 +1,153 @@
+{% extends "core/base_chat.html" %}
+
+{% block title %}Chat Room: {{ room_name }}{% endblock %}
+
+{% block nav_chat %}active{% endblock %}
+
+{% block chat_title %}
+Room: {{ room_name }}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .back-button {
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .back-button:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    .chat-header > div:first-child {
+        display: flex;
+        align-items: center;
+    }
+
+    .message-sender {
+        font-weight: 600;
+        font-size: 12px;
+        margin-bottom: 4px;
+        opacity: 0.9;
+    }
+
+    .message.sent .message-sender {
+        text-align: right;
+    }
+
+    .message.received .message-sender {
+        color: #667eea;
+    }
+</style>
+{% endblock %}
+
+{% block websocket_url %}
+const roomName = "{{ room_name }}";
+const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const wsUrl = `${wsProtocol}//${window.location.host}/ws/chat/${roomName}/`;
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Override buildMessagePayload to include username
+    buildMessagePayload = function(message) {
+        const userName = localStorage.getItem('chatUsername') || 'Anonymous';
+        return {
+            action: 'new_chat_message',
+            payload: {
+                message: message,
+                name: userName
+            }
+        };
+    };
+
+    // Override handleMessage to display messages with username
+    handleMessage = function(data) {
+        // Extract message and name from payload
+        let messageText, senderName;
+        if (data.payload && typeof data.payload === 'object' && data.payload.message) {
+            messageText = data.payload.message;
+            senderName = data.payload.name || 'Anonymous';
+        } else {
+            messageText = data.payload || data.message || JSON.stringify(data);
+            senderName = 'Anonymous';
+        }
+
+        // Create message element with sender name
+        const container = document.getElementById('messagesContainer');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message received';
+
+        // Add sender name
+        const senderDiv = document.createElement('div');
+        senderDiv.className = 'message-sender';
+        senderDiv.textContent = senderName;
+        messageDiv.appendChild(senderDiv);
+
+        // Add message text
+        const textDiv = document.createElement('div');
+        textDiv.textContent = messageText;
+        messageDiv.appendChild(textDiv);
+
+        // Add timestamp
+        const messageTime = document.createElement('div');
+        messageTime.className = 'message-time';
+        messageTime.textContent = new Date().toLocaleTimeString();
+        messageDiv.appendChild(messageTime);
+
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+    };
+
+    // Override displayMessage to show username for sent messages too
+    displayMessage = function(text, type) {
+        const container = document.getElementById('messagesContainer');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+
+        // Add sender name
+        const senderDiv = document.createElement('div');
+        senderDiv.className = 'message-sender';
+        senderDiv.textContent = type === 'sent' ? 'You' : 'Anonymous';
+        messageDiv.appendChild(senderDiv);
+
+        // Add message text
+        const textDiv = document.createElement('div');
+        textDiv.textContent = text;
+        messageDiv.appendChild(textDiv);
+
+        // Add timestamp
+        const messageTime = document.createElement('div');
+        messageTime.className = 'message-time';
+        messageTime.textContent = new Date().toLocaleTimeString();
+        messageDiv.appendChild(messageTime);
+
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+    };
+
+    window.addEventListener('load', function() {
+        // Add back button
+        const headerDiv = document.querySelector('.chat-header > div:first-child');
+        const backButton = document.createElement('a');
+        backButton.href = "{% url 'chat:room_list' %}";
+        backButton.className = 'back-button';
+        backButton.textContent = '← Back';
+        headerDiv.insertBefore(backButton, headerDiv.firstChild);
+
+        // Check if user has a name saved
+        const savedName = localStorage.getItem('chatUsername');
+        if (!savedName) {
+            alert('Please enter your name first!');
+            window.location.href = "{% url 'chat:room_list' %}";
+        }
+    });
+</script>
+{% endblock %}

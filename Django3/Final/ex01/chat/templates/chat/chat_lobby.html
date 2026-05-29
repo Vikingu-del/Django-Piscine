@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block header_title %}Chat Lobby{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center gap-4 mt-5">
+{% for room in rooms %}
+    <div class="card shadow-sm">
+        <img src="{%static 'chat/images/chat.svg' %}" class="card-img-top p-3" alt="Chat Icon">
+        <div class="card-body text-center">
+            <h5 class="card-title fw-bold">{{ room.name }}</h5>
+            <p class="card-text text-muted">Internal things for {{ room.name }}</p>
+            <a href="{%url 'chat:room' room.name %}" class="btn btn-primary">Enter Chat</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'chat/js/chat.js' %}"></script>
+{% endblock %}

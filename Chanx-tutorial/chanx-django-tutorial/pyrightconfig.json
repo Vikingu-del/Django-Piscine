@@ -1,0 +1,7 @@
+{
+    "include": ["chanx_django"],
+    "typeCheckingMode": "strict",
+    "reportMissingTypeArgument": "warning",
+    "reportMissingTypeStubs": "warning",
+    "pythonVersion": "3.11"
+}
