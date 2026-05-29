@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0006_remove_user_reputation'),
+        ("app1", "0006_remove_user_reputation"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='tip',
-            name='hide',
+            model_name="tip",
+            name="hide",
         ),
     ]

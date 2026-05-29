@@ -3,6 +3,7 @@ def process_file(filename: str) -> None:
         for n in f.readline().split(","):
             print(n)
 
+
 def main():
     process_file("numbers.txt")
 

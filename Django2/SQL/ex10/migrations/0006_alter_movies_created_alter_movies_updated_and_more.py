@@ -7,38 +7,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ex10', '0005_movies_created_movies_updated_alter_people_created_and_more'),
+        ("ex10", "0005_movies_created_movies_updated_alter_people_created_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='movies',
-            name='created',
+            model_name="movies",
+            name="created",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='movies',
-            name='updated',
+            model_name="movies",
+            name="updated",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='people',
-            name='created',
+            model_name="people",
+            name="created",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='people',
-            name='updated',
+            model_name="people",
+            name="updated",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='planets',
-            name='created',
+            model_name="planets",
+            name="created",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='planets',
-            name='updated',
+            model_name="planets",
+            name="updated",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]

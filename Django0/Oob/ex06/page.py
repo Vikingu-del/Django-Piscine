@@ -1,7 +1,25 @@
 from elem import Elem, Text
 from elements import (
-    Html, Head, Body, Title, Meta, Img, Table,
-    Th, Tr, Td, Ul, Ol, Li, H1, H2, P, Div, Span, Hr, Br
+    Html,
+    Head,
+    Body,
+    Title,
+    Meta,
+    Img,
+    Table,
+    Th,
+    Tr,
+    Td,
+    Ul,
+    Ol,
+    Li,
+    H1,
+    H2,
+    P,
+    Div,
+    Span,
+    Hr,
+    Br,
 )
 
 
@@ -24,19 +42,41 @@ class Page:
             raise Elem.ValidationError("The document is not valid")
         with open(filename, "w") as f:
             f.write(self.__str__())
-        
 
     def __recursive_check(self, node) -> bool:
-        allowed_types = (Html, Head, Body, Title, Meta, Img, Table, Th, Tr, Td,
-                         Ul, Ol, Li, H1, H2, P, Div, Span, Hr, Br, Text)
+        allowed_types = (
+            Html,
+            Head,
+            Body,
+            Title,
+            Meta,
+            Img,
+            Table,
+            Th,
+            Tr,
+            Td,
+            Ul,
+            Ol,
+            Li,
+            H1,
+            H2,
+            P,
+            Div,
+            Span,
+            Hr,
+            Br,
+            Text,
+        )
 
         if not isinstance(node, allowed_types):
             return False
 
         if isinstance(node, Html):
-            if (len(node.content) != 2 or
-                    not isinstance(node.content[0], Head) or
-                    not isinstance(node.content[1], Body)):
+            if (
+                len(node.content) != 2
+                or not isinstance(node.content[0], Head)
+                or not isinstance(node.content[1], Body)
+            ):
                 return False
 
         elif isinstance(node, Head):
@@ -54,8 +94,9 @@ class Page:
                 return False
 
         elif isinstance(node, (Ul, Ol)):
-            if len(node.content) == 0 or\
-                    not all(isinstance(c, Li) for c in node.content):
+            if len(node.content) == 0 or not all(
+                isinstance(c, Li) for c in node.content
+            ):
                 return False
 
         elif isinstance(node, Tr):
@@ -64,8 +105,9 @@ class Page:
 
             has_th = any(isinstance(c, Th) for c in node.content)
             has_td = any(isinstance(c, Td) for c in node.content)
-            if (has_th and has_td) or\
-                    not all(isinstance(c, (Th, Td)) for c in node.content):
+            if (has_th and has_td) or not all(
+                isinstance(c, (Th, Td)) for c in node.content
+            ):
                 return False
 
         elif isinstance(node, Table):
@@ -99,60 +141,75 @@ def main():
                     [
                         Title(Text("Erik")),
                         Meta(attr={"charset": "UTF8"}),
-                        Meta(attr={
-                            "name": "viewport",
-                            "content": "width=device-width, initial-scale=1.0"
-                        })
+                        Meta(
+                            attr={
+                                "name": "viewport",
+                                "content": "width=device-width, initial-scale=1.0",
+                            }
+                        ),
                     ]
                 ),
                 Body(
                     [
                         H1(Text("A test Exercise")),
                         H2(Text("Tables")),
-                        Table([
-                            Tr([
-                                Th(Text("First Table Header")),
-                                Th(Text("Second Table Header")),
-                                Th(Text("Third Table Header"))
-                            ]),
-                            Tr([
-                                Td(Text("First Table Data")),
-                                Td(Text("Second Table Data")),
-                                Td(Text("Third Table Data"))
-                            ])
-                        ]),
-                        Div([
-                            H2(Text("Div and Lists")),
-                            Div([
-                                Span(
-                                    P(Text("Unordered lists")),
+                        Table(
+                            [
+                                Tr(
+                                    [
+                                        Th(Text("First Table Header")),
+                                        Th(Text("Second Table Header")),
+                                        Th(Text("Third Table Header")),
+                                    ]
                                 ),
-                                Ul([
-                                    Li(Text("First element")),
-                                    Li(Text("Second element")),
-                                    Li(Text("Third element"))
-                                ]),
-                                Span(
-                                    P(Text("Ordered lists")),
+                                Tr(
+                                    [
+                                        Td(Text("First Table Data")),
+                                        Td(Text("Second Table Data")),
+                                        Td(Text("Third Table Data")),
+                                    ]
                                 ),
-                                Ol([
-                                    Li(Text("First element")),
-                                    Li(Text("Second element")),
-                                    Li(Text("Third element"))
-                                ])
-                            ])
-                        ])
+                            ]
+                        ),
+                        Div(
+                            [
+                                H2(Text("Div and Lists")),
+                                Div(
+                                    [
+                                        Span(
+                                            P(Text("Unordered lists")),
+                                        ),
+                                        Ul(
+                                            [
+                                                Li(Text("First element")),
+                                                Li(Text("Second element")),
+                                                Li(Text("Third element")),
+                                            ]
+                                        ),
+                                        Span(
+                                            P(Text("Ordered lists")),
+                                        ),
+                                        Ol(
+                                            [
+                                                Li(Text("First element")),
+                                                Li(Text("Second element")),
+                                                Li(Text("Third element")),
+                                            ]
+                                        ),
+                                    ]
+                                ),
+                            ]
+                        ),
                     ]
-                )
+                ),
             ],
-            attr={"lang": "en"}
+            attr={"lang": "en"},
         )
     )
     valid_p.write_to_file("index.html")
-    
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         main()
     except Exception as e:

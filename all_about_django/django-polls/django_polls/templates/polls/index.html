@@ -9,8 +9,8 @@
             <a href="{% url 'polls:detail' question.id %}">
                 {{ question.question_text }}
             </a>
-        </li> 
-    {% endfor %} 
+        </li>
+    {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>

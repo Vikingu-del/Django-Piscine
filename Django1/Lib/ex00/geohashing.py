@@ -1,4 +1,5 @@
-import sys, antigravity
+import sys
+import antigravity
 
 
 def run_geohash(lat_str, lon_str, date_dow_str):
@@ -6,7 +7,7 @@ def run_geohash(lat_str, lon_str, date_dow_str):
         # 1. Validation & Conversion
         lat = float(lat_str)
         lon = float(lon_str)
-        date_dow = date_dow_str.encode('utf-8')
+        date_dow = date_dow_str.encode("utf-8")
 
         # 2. Execution
         antigravity.geohash(lat, lon, date_dow)

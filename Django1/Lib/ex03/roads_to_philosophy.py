@@ -2,9 +2,10 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 
+
 def get_wikipedia_page(title: str) -> str:
     url = "https://en.wikipedia.org/w/index.php"
-    
+
     params = {
         "search": title,
     }
@@ -14,7 +15,9 @@ def get_wikipedia_page(title: str) -> str:
     }
 
     try:
-        response = requests.get(url, params=params, headers=headers, allow_redirects=True)
+        response = requests.get(
+            url, params=params, headers=headers, allow_redirects=True
+        )
 
         if response.status_code == 404:
             print("It's a dead end !")
@@ -29,13 +32,13 @@ def get_wikipedia_page(title: str) -> str:
 
 def recursive_search(title: str, roads: list) -> str:
     html = get_wikipedia_page(title=title)
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
 
     h1_tag = soup.find(id="firstHeading")
     if not h1_tag:
         print("It's a dead end !")
         sys.exit(0)
-    
+
     current_title = h1_tag.get_text()
     if current_title in roads:
         print("It leads to an infinite loop !")
@@ -59,17 +62,16 @@ def recursive_search(title: str, roads: list) -> str:
         for p in paragraphs:
             links = p.find_all("a")
             for link in links:
-                href = link.get('href')
+                href = link.get("href")
                 if href and href.startswith("/wiki/") and ":" not in href:
                     # Extract the next title and recurse
-                    next_title = href.split('/')[-1]
+                    next_title = href.split("/")[-1]
                     recursive_search(next_title, roads)
                     return
 
     # If the loop finishes without finding a link
     print("It's a dead end !")
     sys.exit(0)
-
 
 
 def main():

@@ -8,7 +8,7 @@
     {% if user.is_authenticated %}
     <form action="{% url 'app1:delete' tip.id %}" method="post" class="position-absolute top-0 end-0 p-2" style="z-index: 2;">
         {% csrf_token %}
-        <button type="submit" class="btn-close" 
+        <button type="submit" class="btn-close"
             {% if user == tip.author or perms.app1.delete_tip %}
                 onclick="return confirm('ADMIN/OWNER: Delete this post permanently?');"
                 title="Delete (Admin/Owner)"
@@ -23,7 +23,7 @@
         <p class="card-text">{{ tip.content }}</p>
         <p class="card-text"><small class="text-muted">{{ tip.date }}</small></p>
     </div>
-    
+
     {% if user.is_authenticated %}
     <div class="card-footer d-flex justify-content-between align-items-center">
         <div>

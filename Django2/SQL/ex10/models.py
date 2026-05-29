@@ -30,12 +30,12 @@ class People(models.Model):
     updated = models.DateTimeField(default=timezone.now)
 
     homeworld = models.ForeignKey(
-        Planets, 
-        on_delete=models.CASCADE, 
+        Planets,
+        on_delete=models.CASCADE,
         # to_field='name', # Normally should be this but because of the fixtures
-        db_column='homeworld',
-        null=True, # also this
-        blank=True, # also this
+        db_column="homeworld",
+        null=True,  # also this
+        blank=True,  # also this
     )
 
     def __str__(self):

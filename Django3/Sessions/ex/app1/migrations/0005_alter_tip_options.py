@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0004_tip_hide'),
+        ("app1", "0004_tip_hide"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='tip',
-            options={'permissions': [('can_downvote_tips', 'Can downvote any tip')]},
+            name="tip",
+            options={"permissions": [("can_downvote_tips", "Can downvote any tip")]},
         ),
     ]

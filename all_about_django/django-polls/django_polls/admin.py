@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Question, Choice
 
+
 # This tells Django: "Choices should be edited on the same page as the Question"
 # class ChoiceInline(admin.StackedInline):
 class ChoiceInline(admin.TabularInline):
@@ -14,10 +15,7 @@ class QuestionAdmin(admin.ModelAdmin):
         (None, {"fields": ["question_text"]}),
         (
             "Date information",
-            {
-                "fields": ["pub_date"],
-                "classes": ["collapse"] 
-            },
+            {"fields": ["pub_date"], "classes": ["collapse"]},
         ),
     ]
     inlines = [ChoiceInline]
@@ -26,7 +24,6 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ["question_text"]
     list_per_page = 1
     date_hierarchy = "pub_date"
-
 
 
 admin.site.register(Question, QuestionAdmin)

@@ -5,7 +5,7 @@ movies = [
         "opening_crawl": "",
         "director": "George Lucas",
         "producer": "Rick McCallum",
-        "release_date": "1999-05-19"
+        "release_date": "1999-05-19",
     },
     {
         "title": "Attack of the Clones",
@@ -13,7 +13,7 @@ movies = [
         "opening_crawl": "",
         "director": "George Lucas",
         "producer": "Rick McCallum",
-        "release_date": "2002-05-16"
+        "release_date": "2002-05-16",
     },
     {
         "title": "Revenge of the Sith",
@@ -21,7 +21,7 @@ movies = [
         "opening_crawl": "",
         "director": "George Lucas",
         "producer": "Rick McCallum",
-        "release_date": "2005-05-19"
+        "release_date": "2005-05-19",
     },
     {
         "title": "A New Hope",
@@ -29,7 +29,7 @@ movies = [
         "opening_crawl": "",
         "director": "George Lucas",
         "producer": "Gary Kurtz, Rick McCallum",
-        "release_date": "1977-05-25"
+        "release_date": "1977-05-25",
     },
     {
         "title": "The Empire Strikes Back",
@@ -37,7 +37,7 @@ movies = [
         "opening_crawl": "",
         "director": "Irvin Kershner",
         "producer": "Gary Kurtz, Rick McCallum",
-        "release_date": "1980-05-17"
+        "release_date": "1980-05-17",
     },
     {
         "title": "Return of the Jedi",
@@ -45,7 +45,7 @@ movies = [
         "opening_crawl": "",
         "director": "Richard Marquand",
         "producer": "Gary Kurtz, Rick McCallum",
-        "release_date": "1983-05-25"
+        "release_date": "1983-05-25",
     },
     {
         "title": "The Force Awakens",
@@ -53,6 +53,6 @@ movies = [
         "opening_crawl": "",
         "director": "J. J. Abrams",
         "producer": "Kathleen Kennedy, J. J. Abrams, Bryan Burk",
-        "release_date": "2015-12-11"
-    }
+        "release_date": "2015-12-11",
+    },
 ]

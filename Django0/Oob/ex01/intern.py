@@ -2,10 +2,7 @@
 
 
 class Intern:
-    def __init__(
-            self,
-            name: str = "My name? I'm nobody, an intern, I have no name."
-    ):
+    def __init__(self, name: str = "My name? I'm nobody, an intern, I have no name."):
         self.name = name
 
     def __str__(self) -> str:
@@ -42,5 +39,5 @@ def main():
         print(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

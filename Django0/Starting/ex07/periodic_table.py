@@ -7,15 +7,15 @@ class Element:
         for item in attr_part.split(","):
             key, value = item.split(":")
             attrs[key.strip()] = value.strip()
-        self.position = int(attrs['position'])
-        self.number = attrs['number']
-        self.small = attrs['small']
-        self.molar = attrs['molar']
-        self.electron = attrs['electron']
+        self.position = int(attrs["position"])
+        self.number = attrs["number"]
+        self.small = attrs["small"]
+        self.molar = attrs["molar"]
+        self.electron = attrs["electron"]
 
     def __str__(self):
         return f"{self.name}, {self.position}, {self.number}, {self.small}, {self.electron}"
-    
+
     def generate_td(self) -> str:
         """Returns the HTML representation of this specific element."""
         return f"""
@@ -32,14 +32,15 @@ class Element:
 
 def process_file(filename: str) -> list[Element]:
     elements = []
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         for line in f:
             if line.strip():
                 elements.append(Element(line))
     return elements
 
+
 def generate_html(elements: list[Element]) -> str:
-    html_start = f"""<!DOCTYPE html>
+    html_start = """<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -50,7 +51,7 @@ def generate_html(elements: list[Element]) -> str:
                 <table>
                     <tr>"""
     content = ""
-    current_col = 0 # Define it here!
+    current_col = 0  # Define it here!
     for el in elements:
         if el.position == 0 and el.name != "Hydrogen":
             content += "\n        </tr>\n        <tr>"
@@ -63,6 +64,7 @@ def generate_html(elements: list[Element]) -> str:
     html_end = "\n        </tr>\n    </table>\n</body>\n</html>"
     return html_start + content + html_end
 
+
 def generate_css() -> str:
     css_body = """td {
         border: 1px solid black;
@@ -72,16 +74,17 @@ def generate_css() -> str:
         border-collapse: collapse;
     }"""
     return css_body
-    
+
 
 def generate_files():
     html = generate_html(process_file("periodic_table.txt"))
-    with open("periodic_table.html", 'w') as f:
+    with open("periodic_table.html", "w") as f:
         f.write(html)
     print("Successfully generated periodic_table.html")
     css = generate_css()
-    with open("style.css", 'w') as f:
+    with open("style.css", "w") as f:
         f.write(css)
-        
+
+
 if __name__ == "__main__":
     generate_files()

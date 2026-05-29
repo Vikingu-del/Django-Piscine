@@ -29,7 +29,7 @@
                     <td>{{ article.synopsis|truncatechars:20 }}</td>
                     <td>{{ article.created|timesince }}</td>
                     {% if user.is_authenticated %}
-                    <td class="text-end"> 
+                    <td class="text-end">
                         <form action="{% url 'app:favorite' article.id %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn p-0 border-0 shadow-none">

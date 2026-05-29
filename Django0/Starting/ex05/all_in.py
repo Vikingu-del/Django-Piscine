@@ -1,17 +1,13 @@
 import sys
 
+
 def my_var() -> tuple[dict[str, str], dict[str, str]]:
-    states = {
-        "Oregon" : "OR",
-        "Alabama" : "AL",
-        "New Jersey": "NJ",
-        "Colorado" : "CO"
-    }
+    states = {"Oregon": "OR", "Alabama": "AL", "New Jersey": "NJ", "Colorado": "CO"}
     capital_cities = {
         "OR": "Salem",
         "AL": "Montgomery",
         "NJ": "Trenton",
-        "CO": "Denver"
+        "CO": "Denver",
     }
     return states, capital_cities
 
@@ -20,10 +16,10 @@ def process_input() -> None:
     states, capital_cities = my_var()
     args = sys.argv
     if len(args) == 2:
-        expressions = sys.argv[1].split(',')
+        expressions = sys.argv[1].split(",")
         low_states = {k.lower(): k for k in states.keys()}
         low_capitals = {v.lower(): v for v in capital_cities.values()}
-        
+
         for expr in expressions:
             clean_name = " ".join(expr.split())
             if not clean_name:
@@ -45,6 +41,7 @@ def process_input() -> None:
 
             else:
                 print(f"{clean_name} is neither a capital city nor a state")
+
 
 if __name__ == "__main__":
     process_input()

@@ -8,7 +8,7 @@ import re
 # Function to open and read a file
 def process_file(filename: str) -> str:
     try:
-        with open(filename, "r") as f:
+        with open(filename) as f:
             template_content = f.read()
             return template_content
     except Exception as e:
@@ -21,7 +21,7 @@ def parse_settings() -> None:
     settings_path = os.path.join(os.path.dirname(__file__), "settings.py")
     settings = {}
     try:
-        with open(settings_path, "r") as f:
+        with open(settings_path) as f:
             for line in f:
                 matched = re.match(r'(\w+)\s*=\s*"([^"]+)"', line)
                 if matched:
@@ -51,7 +51,7 @@ def create_htmlDom() -> str:
 # Creates a file filename.html
 def create_index(html: str, filename: str) -> None:
     try:
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             f.write(html)
         print(f"File {filename} created")
     except Exception as e:
@@ -74,5 +74,5 @@ def main():
         print("Usage: python3 render.py <file.template>")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

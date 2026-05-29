@@ -13,7 +13,7 @@ class CoffeeMachine:
             super().__init__(
                 price=0.90,
                 name="empty cup",
-                descript="An empty cup?! Gimme my money back!"
+                descript="An empty cup?! Gimme my money back!",
             )
 
     class BrokenMachineException(Exception):
@@ -36,6 +36,7 @@ class CoffeeMachine:
 
 def main():
     from beverages import Coffee, Tea, Chocolate, Cappucinno
+
     machine = CoffeeMachine()
     beverages = [Coffee(), Tea(), Chocolate(), Cappucinno()]
     for i in range(12):

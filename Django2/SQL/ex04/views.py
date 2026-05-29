@@ -6,9 +6,9 @@ from .forms import MovieForm
 
 
 def init(request):
-    query = load_query(get_sql_path('ex04', 'schema.sql'))
+    query = load_query(get_sql_path("ex04", "schema.sql"))
     try:
-        execute_query(query, type='commit')
+        execute_query(query, type="commit")
         return HttpResponse("OK")
     except Exception as e:
         return HttpResponse(str(e))
@@ -22,43 +22,43 @@ def populate(request):
         ({data['episode_nb']}, '{data['title']}', '{data['director']}', '{data['producer']}', '{data['release_date']}')
         """
         try:
-            execute_query(query, type='commit')
+            execute_query(query, type="commit")
             results.append(f"OK - {data['title']} added to database")
         except Exception as e:
             results.append(f"Error - {str(e)}")
-    return render(request, 'ex04/populate.html', {'results': results})
+    return render(request, "ex04/populate.html", {"results": results})
 
 
 def display(request):
-    query = load_query(get_sql_path('ex04', 'fetch.sql'))
+    query = load_query(get_sql_path("ex04", "fetch.sql"))
     try:
-        data = execute_query(query, type='fetch')
-        return render(request, 'ex04/display.html', {'movies': data})
+        data = execute_query(query, type="fetch")
+        return render(request, "ex04/display.html", {"movies": data})
     except Exception:
-        return render(request, 'ex04/display.html', {'movies': None})
+        return render(request, "ex04/display.html", {"movies": None})
 
 
 def remove(request):
     try:
-        query = load_query(get_sql_path('ex04', 'fetch.sql'))
-        data = execute_query(query, type='fetch')
+        query = load_query(get_sql_path("ex04", "fetch.sql"))
+        data = execute_query(query, type="fetch")
         if not data:
             return HttpResponse("No data available")
-        movie_choices = [(m['title'], m['title']) for m in data]
-    except Exception as e:
+        movie_choices = [(m["title"], m["title"]) for m in data]
+    except Exception:
         return HttpResponse("No data available")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = MovieForm(request.POST, choices=movie_choices)
         if form.is_valid():
-            selected_titles = form.cleaned_data['titles']
+            selected_titles = form.cleaned_data["titles"]
             query = f"DELETE FROM ex04_movies WHERE title='{selected_titles}';"
             try:
-                execute_query(query, params=(tuple(selected_titles),), type='commit')
-                return redirect('ex04:remove')
+                execute_query(query, params=(tuple(selected_titles),), type="commit")
+                return redirect("ex04:remove")
             except Exception as e:
                 return HttpResponse(str(e))
-            
+
     else:
         form = MovieForm(choices=movie_choices)
-    return render(request, 'ex04/form.html', {'form': form})
+    return render(request, "ex04/form.html", {"form": form})

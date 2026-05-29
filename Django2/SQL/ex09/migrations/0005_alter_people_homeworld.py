@@ -7,13 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ex09', '0004_alter_people_homeworld'),
+        ("ex09", "0004_alter_people_homeworld"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='people',
-            name='homeworld',
-            field=models.ForeignKey(db_column='homeworld', on_delete=django.db.models.deletion.CASCADE, to='ex09.planets', to_field='name'),
+            model_name="people",
+            name="homeworld",
+            field=models.ForeignKey(
+                db_column="homeworld",
+                on_delete=django.db.models.deletion.CASCADE,
+                to="ex09.planets",
+                to_field="name",
+            ),
         ),
     ]

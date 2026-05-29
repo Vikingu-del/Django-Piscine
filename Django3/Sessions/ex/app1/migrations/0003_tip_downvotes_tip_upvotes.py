@@ -7,18 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0002_tip'),
+        ("app1", "0002_tip"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tip',
-            name='downvotes',
-            field=models.ManyToManyField(blank=True, related_name='downvoted_tips', to=settings.AUTH_USER_MODEL),
+            model_name="tip",
+            name="downvotes",
+            field=models.ManyToManyField(
+                blank=True, related_name="downvoted_tips", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='tip',
-            name='upvotes',
-            field=models.ManyToManyField(blank=True, related_name='upvoted_tips', to=settings.AUTH_USER_MODEL),
+            model_name="tip",
+            name="upvotes",
+            field=models.ManyToManyField(
+                blank=True, related_name="upvoted_tips", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

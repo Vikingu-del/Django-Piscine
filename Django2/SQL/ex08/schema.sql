@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS ex08_planets (
     population BIGINT,
     rotation_period INT,
     surface_water REAL,
-    terrain VARCHAR(128)    
+    terrain VARCHAR(128)
 );
 
 CREATE TABLE IF NOT EXISTS ex08_people (

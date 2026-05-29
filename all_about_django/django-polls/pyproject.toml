@@ -5,5 +5,5 @@ requires = ["setuptools.build_meta"]
 name = "django-polls"
 version = "0.1"
 dependencies = [
-    "django>"
+  "django>"
 ]

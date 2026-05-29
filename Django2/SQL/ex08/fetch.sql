@@ -1,6 +1,6 @@
-SELECT 
-    p.name AS character_name, 
-    p.homeworld, 
+SELECT
+    p.name AS character_name,
+    p.homeworld,
     pl.climate
 FROM
     ex08_people p

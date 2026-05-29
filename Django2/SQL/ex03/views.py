@@ -12,10 +12,11 @@ def populate(request):
             results.append(f"OK - {movie} added to database")
         except Exception as e:
             results.append(f"Error - {str(e)}")
-    return render(request, 'ex03/populate.html', {'results': results})
+    return render(request, "ex03/populate.html", {"results": results})
+
 
 def display(request):
-    movies = Movies.objects.all().order_by('episode_nb')
+    movies = Movies.objects.all().order_by("episode_nb")
     if not movies:
-        return render(request, 'ex03/display.html', {'movies': None})
-    return render(request, 'ex03/display.html', {'movies': movies})
+        return render(request, "ex03/display.html", {"movies": None})
+    return render(request, "ex03/display.html", {"movies": movies})

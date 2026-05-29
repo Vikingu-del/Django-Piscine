@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class Ex09Config(AppConfig):
-    name = 'ex09'
+    name = "ex09"

@@ -37,7 +37,7 @@
                     {{ article.content|linebreaks }}
                 </section>
                 {% if user.is_authenticated %}
-                <div class="text-end"> 
+                <div class="text-end">
                     <form action="{% url 'app:favorite' article.id %}" method="post" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn p-0 border-0 shadow-none">

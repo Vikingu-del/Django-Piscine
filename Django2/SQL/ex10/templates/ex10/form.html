@@ -21,8 +21,8 @@
             <ul>
             {% for item in results %}
                 <li>
-                    {{ item.title }} - {{ item.characters__name }} - 
-                    {{ item.characters__gender }} - {{ item.characters__homeworld__name }} - 
+                    {{ item.title }} - {{ item.characters__name }} -
+                    {{ item.characters__gender }} - {{ item.characters__homeworld__name }} -
                     {{ item.characters__homeworld__diameter }}
                 </li>
             {% endfor %}
