@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="login-section" class="{% if user.is_authenticated %}d-none{% endif %}">
-    <form id="ajax-auth-form" method="POST" novalidate>
+    <form id="ajax-auth-form" method="POST" action="{% url 'account:login' %}" novalidate>
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-primary">Login</button>
@@ -16,6 +16,6 @@
 
 <div id="logout-section" class="{% if not user.is_authenticated %}d-none{% endif %}">
     <p>Logged as <span id="current-username" class="fw-bold">{{ user.username }}</span></p>
-    <button id="ajax-logout-btn" class="btn btn-danger">Logout</button>
+    <button id="ajax-logout-btn" data-url="{% url 'account:logout' %}" class="btn btn-danger">Logout</button>
 </div>
 {% endblock %}

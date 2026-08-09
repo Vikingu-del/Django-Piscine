@@ -23,7 +23,11 @@
 
     {% bootstrap_javascript %}
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Local jQuery -->
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+
+    <!-- CDN remote jQuery -->
+    {% comment %} <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> {% endcomment %}
 
     {% block scripts %}
         <script src="{% static 'js/authenticate.js' %}"></script>

@@ -20,5 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("account.urls")),
+    path("account/", include("account.urls")),
 ]
+
+handler404 = 'account.views.custom_404_view'
