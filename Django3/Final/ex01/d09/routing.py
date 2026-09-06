@@ -1,9 +1,5 @@
-from channels.routing import URLRouter
-from chanx.channels.routing import path
-from chat.consumers import ChatConsumer
+from chat.routing import websocket_urlpatterns as chat_ws_patterns
 
-router = URLRouter(
-    [
-        path("ws/chat/", ChatConsumer.as_asgi()),
-    ]
-)
+websocket_urlpatterns = [
+    *chat_ws_patterns,
+]

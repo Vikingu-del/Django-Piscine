@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.middleware.csrf import get_token, rotate_token
+from django.middleware.csrf import get_token
 from django.shortcuts import redirect
 
 def custom_404_view(request, exception):

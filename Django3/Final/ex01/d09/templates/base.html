@@ -23,10 +23,9 @@
 
     {% bootstrap_javascript %}
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
     {% block scripts %}
-        <script src="{% static 'js/global.js' %}"></script>
+        <script src="{% static 'js/authenticate.js' %}"></script>
     {% endblock %}
 </body>
 </html>
