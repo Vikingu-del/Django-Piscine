@@ -1,0 +1,31 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Account Details{% endblock %}</title>
+    {% bootstrap_css %}
+</head>
+<body class="container">
+
+    <div class="pt-3 pb-3">
+        <div class="p-2 d-flex align-items-baseline border-bottom border-light">
+            <h1 class="display-4 fw-normal mb-0">{% block header_title %}Account{% endblock %}</h1>
+        </div>
+    </div>
+
+    <main class="mt-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% bootstrap_javascript %}
+
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    {% block scripts %}
+        <script src="{% static 'js/authenticate.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

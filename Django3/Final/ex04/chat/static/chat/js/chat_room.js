@@ -6,7 +6,10 @@ $(document).ready(function() {
     const chatSocket = new WebSocket(wsUrl);
     const $chatLog = $('#chat-log');
     const $chatWindow = $('#chat-window');
+    const $userList = $('#user-list');
     const $messageInput = $('#chat-message-input');
+
+    $chatWindow.scrollTop($chatWindow[0].scrollHeight);
 
     function appendChatMessage(username, message) {
         const isMe = username === currentUsername;
@@ -25,7 +28,14 @@ $(document).ready(function() {
         const action = data.action;
         const payload = data.payload;
 
-        if (action === 'system_alert') {
+        if (action === "room_history") {
+            $chatLog.empty(); 
+            if (payload && Array.isArray(payload.messages)) {
+                payload.messages.forEach(function(msg) {
+                    appendChatMessage(msg.username, msg.message);
+                });
+            }
+        } else if (action === 'system_alert') {
             $chatLog.append(`
                 <div class="text-center my-2">
                     <span class="badge bg-secondary text-wrap">${payload.message}</span>
@@ -33,7 +43,22 @@ $(document).ready(function() {
             `);
         } else if (action === 'chat_message' || action === 'receive_chat_message') {
             appendChatMessage(payload.username, payload.message);
+        } else if (action === 'user_list') {
+            // Re-render connected user list dynamically
+            $userList.empty();
+            if (payload.users && payload.users.length > 0) {
+                payload.users.forEach(user => {
+                    const isMe = user === currentUsername;
+                    $userList.append(`
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            ${user} ${isMe ? '<span class="badge bg-primary rounded-pill">You</span>' : ''}
+                        </li>
+                    `);
+                });
+            }
         }
+
+        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
     };
 
     function sendMessage() {

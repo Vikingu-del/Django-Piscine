@@ -6,9 +6,8 @@ $(document).ready(function() {
     const chatSocket = new WebSocket(wsUrl);
     const $chatLog = $('#chat-log');
     const $chatWindow = $('#chat-window');
+    const $userList = $('#user-list');
     const $messageInput = $('#chat-message-input');
-
-    $chatWindow.scrollTop($chatWindow[0].scrollHeight);
 
     function appendChatMessage(username, message) {
         const isMe = username === currentUsername;
@@ -42,9 +41,19 @@ $(document).ready(function() {
             `);
         } else if (action === 'chat_message' || action === 'receive_chat_message') {
             appendChatMessage(payload.username, payload.message);
+        } else if (action === 'user_list') {
+            $userList.empty();
+            if (payload.users && Array.isArray(payload.users)) {
+                payload.users.forEach(function(user) {
+                    const isMe = user === currentUsername;
+                    $userList.append(`
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            ${user} ${isMe ? '<span class="badge bg-primary rounded-pill">You</span>' : ''}
+                        </li>
+                    `);
+                });
+            }
         }
-
-        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
     };
 
     function sendMessage() {
