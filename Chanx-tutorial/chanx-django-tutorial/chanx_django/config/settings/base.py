@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "auth_kit",
+    # Third-party apps
+    "channels",
     "drf_spectacular",
     "chanx.channels",
     # Local apps

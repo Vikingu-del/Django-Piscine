@@ -12,7 +12,7 @@ from chanx.channels.routing import include, path
 ws_router = URLRouter(
     [
         # Uncomment these as you implement each app:
-        # path("chat/", include("chat.routing")),
+        path("chat/", include("chat.routing")),
         # path("assistants/", include("assistants.routing")),
         # path("system/", include("system.routing")),
     ]

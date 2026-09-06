@@ -1,0 +1,10 @@
+# Lint and format
+scripts/lint.sh          # Check
+scripts/lint.sh --fix    # Auto-fix
+
+# Type check
+mypy chanx_django        # Using mypy
+pyright                  # Using pyright
+
+# Run all pre-commit checks manually
+pre-commit run --all-files
