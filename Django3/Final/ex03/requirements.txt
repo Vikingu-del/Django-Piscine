@@ -1,5 +1,8 @@
-chanx[channels, cli, client]==2.7.1
-django-bootstrap5==26.2
-daphne==4.2.1
-pyhumps==3.8.0
-psycopg2-binary==2.9.12
+Python 3.12+
+PostgreSQL
+Django 5.2.13
+chanx[channels, cli, client] == 2.7.1
+django-bootstrap5 == 26.2
+daphne == 4.2.1
+pyhumps == 3.8.0
+psycopg2-binary == 2.9.12
