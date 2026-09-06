@@ -17,6 +17,15 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
         await self.accept()
 
+        # 1. Send recent message history to the newly connected user
+        history = await self.get_room_history(room_name)
+        await self.send_json({
+            "action": "room_history",
+            "payload": {
+                "messages": history
+            }
+        })
+
         # 2. Join Channel Layer Group
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -83,6 +92,28 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         })
 
     # --- Database Helpers ---
+    @database_sync_to_async
+    def get_room_history(self, room_name: str):
+        # Get room by exact name match
+        room = Room.objects.filter(name__iexact=room_name).first()
+        if not room:
+            return []
+
+        # Get the last 50 messages for THIS ROOM across ALL users
+        messages = list(
+            Message.objects.filter(room=room)
+            .select_related("user")
+            .order_by("-timestamp")[:3]
+        )
+        
+        return [
+            {
+                "username": msg.user.username,
+                "message": msg.content
+            }
+            for msg in reversed(messages)
+        ]
+
     @database_sync_to_async
     def save_message(self, room_name: str, user, content: str):
         # Case-insensitive match or create to ensure single room instance

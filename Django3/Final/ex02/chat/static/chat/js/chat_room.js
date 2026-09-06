@@ -1,12 +1,9 @@
 $(document).ready(function() {
     const roomName = JSON.parse($('#room-name').text());
     const currentUsername = JSON.parse($('#user-username').text());
-
     const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
     const wsUrl = `${wsScheme}://${window.location.host}/ws/chat/${roomName}/`;
-    
     const chatSocket = new WebSocket(wsUrl);
-
     const $chatLog = $('#chat-log');
     const $chatWindow = $('#chat-window');
     const $messageInput = $('#chat-message-input');
@@ -30,7 +27,14 @@ $(document).ready(function() {
         const action = data.action;
         const payload = data.payload;
 
-        if (action === 'system_alert') {
+        if (action === "room_history") {
+            $chatLog.empty(); 
+            if (payload && Array.isArray(payload.messages)) {
+                payload.messages.forEach(function(msg) {
+                    appendChatMessage(msg.username, msg.message);
+                });
+            }
+        } else if (action === 'system_alert') {
             $chatLog.append(`
                 <div class="text-center my-2">
                     <span class="badge bg-secondary text-wrap">${payload.message}</span>
